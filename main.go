@@ -50,6 +50,11 @@ func main() {
 		panic(err)
 	}
 	torrentToDownload, err := client.AddMagnet(magnetLink)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
+		os.Exit(1)
+	}
+
 	// torrentToDownload, err := client.AddTorrentFromFile("./KnightsOfTheOldRepublic_dark_334_archive.torrent")
 	fmt.Println("Fetching info...")
 	// Wait for getting torrent metadata
@@ -76,6 +81,12 @@ func main() {
 	}()
 	// Create empty directory to append all files to
 	dirHash, err := ipfsClient.NewObject("unixfs-dir")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
+		fmt.Fprintln(os.Stderr, "Please make sure the IPFS daemon is running e.g. 'ipfs daemon --init'")
+		os.Exit(1)
+	}
+
 	for _, file := range torrentToDownload.Files() {
 		// For each file, create reader that we can use for adding to IPFS
 		reader := file.NewReader()
