@@ -10,7 +10,6 @@ import (
 	"code.cloudfoundry.org/bytefmt"
 	"github.com/anacrolix/missinggo"
 	"github.com/anacrolix/torrent"
-	"github.com/anacrolix/torrent/storage"
 	api "github.com/ipfs/go-ipfs-api"
 )
 
@@ -45,8 +44,8 @@ func main() {
 
 	// Initialize torrent client
 	// TODO should be in memory-store
-	clientConfig := torrent.Config{DefaultStorage: storage.NewBoltDB(os.TempDir())}
-	client, err := torrent.NewClient(&clientConfig)
+	// clientConfig := torrent.Config{DefaultStorage: storage.NewBoltDB(os.TempDir())}
+	client, err := torrent.NewClient(nil) // Use default client config
 	if err != nil {
 		panic(err)
 	}
